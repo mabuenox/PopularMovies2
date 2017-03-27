@@ -17,6 +17,7 @@ import com.mbuenoferrer.popularmovies.entities.Movie;
 import com.mbuenoferrer.popularmovies.enums.MovieListSort;
 import com.mbuenoferrer.popularmovies.tasks.FetchMovieListTaskListener;
 import com.mbuenoferrer.popularmovies.tasks.FetchMovieListTask;
+import com.mbuenoferrer.popularmovies.utils.DimenUtils;
 
 import java.util.List;
 
@@ -37,7 +38,8 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         // Configure recycler view
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        int numberOfColumns = DimenUtils.calculateNoOfColumns(getBaseContext(), 180);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
         mMovieListRecyclerView.setLayoutManager(layoutManager);
         mMovieListRecyclerView.setHasFixedSize(true);
         mMovieListAdapter = new MovieListAdapter(this);
