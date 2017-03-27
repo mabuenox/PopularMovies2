@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="error_message">
+        An error has occurred. Please check your Internet connection.
+    </string>
+    <string name="set_order_popular">Order by popular</string>
+    <string name="set_order_top_rated">Order by top rated</string>
+    <string name="user_rating">User Rating</string>
+    <string name="release_date">Release date</string>
+</resources>
