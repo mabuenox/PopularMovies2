@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class FetchMovieListTask extends AsyncTask<MovieListSort, Void, List<Movie>> {
+public class FetchMovieListTask extends AsyncTask<Integer, Void, List<Movie>> {
 
     private FetchMovieListTaskListener callback;
 
@@ -31,7 +31,7 @@ public class FetchMovieListTask extends AsyncTask<MovieListSort, Void, List<Movi
     }
 
     @Override
-    protected List<Movie> doInBackground(MovieListSort... params) {
+    protected List<Movie> doInBackground(Integer... params) {
 
         List<Movie> movieList = null;
 
@@ -43,17 +43,17 @@ public class FetchMovieListTask extends AsyncTask<MovieListSort, Void, List<Movi
             return null;
         }
 
-        MovieListSort sortBy = params[0];
+        int sortBy = params[0];
 
         NetworkMovieRepository repository = new NetworkMovieRepository();
 
         try {
             switch (sortBy)
             {
-                case POPULAR:
+                case MovieListSort.POPULAR:
                     movieList = repository.getPopular();
                     break;
-                case TOP_RATED:
+                case MovieListSort.TOP_RATED:
                     movieList = repository.getTopRated();
                     break;
             }

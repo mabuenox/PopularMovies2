@@ -46,7 +46,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
         loadMoviesData(MovieListSort.POPULAR);
     }
 
-    private void loadMoviesData(MovieListSort sortBy) {
+    private void loadMoviesData(int sortBy) {
         new FetchMovieListTask(this, new FetchMovieListTaskListener() {
             @Override
             public void onTaskPreExecute() {
