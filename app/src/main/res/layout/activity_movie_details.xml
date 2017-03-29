@@ -18,10 +18,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="@dimen/title_elevation"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
                 android:background="@color/colorAccent"
                 android:textColor="@color/colorMovieTitle"
                 style="@style/Base.TextAppearance.AppCompat.Display2"/>
@@ -88,10 +88,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/info_layout"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
                 style="@style/TextAppearance.AppCompat.Subhead" />
 
             <LinearLayout
@@ -100,17 +100,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_below="@+id/tv_synopsis"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding">
 
                 <TextView
                     android:id="@+id/tv_videos_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/trailers"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/default_padding"
                     style="@style/TextAppearance.AppCompat.Headline" />
 
 
@@ -126,7 +126,7 @@
                         android:clipToPadding="false" />
 
                     <TextView
-                        android:id="@+id/tv_error_message_display"
+                        android:id="@+id/tv_error_message_display_videos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/activity_vertical_margin"
@@ -135,7 +135,7 @@
                         android:visibility="invisible" />
 
                     <ProgressBar
-                        android:id="@+id/pb_loading_indicator"
+                        android:id="@+id/pb_loading_indicator_videos"
                         android:layout_height="@dimen/progress_bar_size"
                         android:layout_width="@dimen/progress_bar_size"
                         android:layout_gravity="center"
@@ -145,9 +145,56 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/reviews_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/videos_layout"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding">
+
+                <TextView
+                    android:id="@+id/tv_reviews_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reviews"
+                    android:paddingBottom="@dimen/default_padding"
+                    style="@style/TextAppearance.AppCompat.Headline" />
 
 
+                <FrameLayout
+                    android:id="@+id/reviews_layout_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false" />
+
+                    <TextView
+                        android:id="@+id/tv_error_message_display_reviews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/default_padding"
+                        android:text="@string/error_message"
+                        android:textSize="@dimen/error_text_size"
+                        android:visibility="invisible" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_loading_indicator_reviews"
+                        android:layout_height="@dimen/progress_bar_size"
+                        android:layout_width="@dimen/progress_bar_size"
+                        android:layout_gravity="center"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+
+            </LinearLayout>
 
         </RelativeLayout>
 

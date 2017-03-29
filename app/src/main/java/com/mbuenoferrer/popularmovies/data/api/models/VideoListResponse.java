@@ -1,4 +1,4 @@
-package com.mbuenoferrer.popularmovies.data;
+package com.mbuenoferrer.popularmovies.data.api.models;
 
 
 import com.google.gson.annotations.SerializedName;

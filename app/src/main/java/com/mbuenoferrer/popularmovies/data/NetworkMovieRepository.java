@@ -1,13 +1,21 @@
 package com.mbuenoferrer.popularmovies.data;
 
 import com.mbuenoferrer.popularmovies.BuildConfig;
+import com.mbuenoferrer.popularmovies.data.api.TheMovieDBService;
+import com.mbuenoferrer.popularmovies.data.api.models.MovieListResponse;
+import com.mbuenoferrer.popularmovies.data.api.models.MovieListResult;
+import com.mbuenoferrer.popularmovies.data.api.models.ReviewListResponse;
+import com.mbuenoferrer.popularmovies.data.api.models.ReviewListResult;
+import com.mbuenoferrer.popularmovies.data.api.models.VideoListResponse;
+import com.mbuenoferrer.popularmovies.data.api.models.VideoListResult;
 import com.mbuenoferrer.popularmovies.data.mappers.MovieMapper;
+import com.mbuenoferrer.popularmovies.data.mappers.ReviewMapper;
 import com.mbuenoferrer.popularmovies.data.mappers.VideoMapper;
 import com.mbuenoferrer.popularmovies.entities.Movie;
+import com.mbuenoferrer.popularmovies.entities.Review;
 import com.mbuenoferrer.popularmovies.entities.Video;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,5 +66,14 @@ public class NetworkMovieRepository {
         return VideoMapper.map(results);
     }
 
+    public List<Review> getReviews(int movieId) throws IOException {
+
+        TheMovieDBService theMovieDBService = retrofit.create(TheMovieDBService.class);
+        Call<ReviewListResponse> call = theMovieDBService.getReviews(movieId, API_KEY);
+        Response<ReviewListResponse> reviewListResponse = call.execute();
+        List<ReviewListResult> results = reviewListResponse.body().getResults();
+
+        return ReviewMapper.map(results);
+    }
 
 }

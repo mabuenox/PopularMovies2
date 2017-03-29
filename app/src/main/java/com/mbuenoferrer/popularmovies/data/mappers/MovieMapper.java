@@ -1,6 +1,6 @@
 package com.mbuenoferrer.popularmovies.data.mappers;
 
-import com.mbuenoferrer.popularmovies.data.MovieListResult;
+import com.mbuenoferrer.popularmovies.data.api.models.MovieListResult;
 import com.mbuenoferrer.popularmovies.entities.Movie;
 
 import java.util.ArrayList;

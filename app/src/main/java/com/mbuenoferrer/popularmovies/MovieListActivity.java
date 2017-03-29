@@ -21,7 +21,8 @@ import com.mbuenoferrer.popularmovies.utils.DimenUtils;
 
 import java.util.List;
 
-public class MovieListActivity extends AppCompatActivity implements MovieListAdapter.MovieListAdapterOnClickListener {
+public class MovieListActivity extends AppCompatActivity
+        implements MovieListAdapter.MovieListAdapterOnClickListener {
 
     private RecyclerView mMovieListRecyclerView;
     private MovieListAdapter mMovieListAdapter;
