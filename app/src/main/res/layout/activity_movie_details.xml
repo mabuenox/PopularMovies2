@@ -94,6 +94,61 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 style="@style/TextAppearance.AppCompat.Subhead" />
 
+            <LinearLayout
+                android:id="@+id/videos_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/tv_synopsis"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/tv_videos_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trailers"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    style="@style/TextAppearance.AppCompat.Headline" />
+
+
+                <FrameLayout
+                    android:id="@+id/videos_layout_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_videos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false" />
+
+                    <TextView
+                        android:id="@+id/tv_error_message_display"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/activity_vertical_margin"
+                        android:text="@string/error_message"
+                        android:textSize="@dimen/error_text_size"
+                        android:visibility="invisible" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_loading_indicator"
+                        android:layout_height="@dimen/progress_bar_size"
+                        android:layout_width="@dimen/progress_bar_size"
+                        android:layout_gravity="center"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+
+
+
+
         </RelativeLayout>
 
     </ScrollView>

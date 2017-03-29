@@ -2,6 +2,7 @@ package com.mbuenoferrer.popularmovies;
 
 import com.mbuenoferrer.popularmovies.data.NetworkMovieRepository;
 import com.mbuenoferrer.popularmovies.entities.Movie;
+import com.mbuenoferrer.popularmovies.entities.Video;
 
 import org.junit.Test;
 
@@ -22,11 +23,20 @@ public class ExampleUnitTest {
 
 
     @Test
-    public void test_retrofit() throws Exception {
+    public void test_api_call_movies() throws Exception {
 
         NetworkMovieRepository networkMovieRepository = new NetworkMovieRepository();
         List<Movie> movies = networkMovieRepository.getPopular();
 
         assertEquals(20, movies.size());
+    }
+
+    @Test
+    public void test_api_call_videos() throws Exception {
+
+        NetworkMovieRepository networkMovieRepository = new NetworkMovieRepository();
+        List<Video> videos = networkMovieRepository.getVideos(127380);
+
+        assertTrue(videos.size() > 0);
     }
 }

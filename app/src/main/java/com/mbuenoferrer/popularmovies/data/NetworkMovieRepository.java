@@ -1,8 +1,10 @@
 package com.mbuenoferrer.popularmovies.data;
 
 import com.mbuenoferrer.popularmovies.BuildConfig;
-import com.mbuenoferrer.popularmovies.R;
+import com.mbuenoferrer.popularmovies.data.mappers.MovieMapper;
+import com.mbuenoferrer.popularmovies.data.mappers.VideoMapper;
 import com.mbuenoferrer.popularmovies.entities.Movie;
+import com.mbuenoferrer.popularmovies.entities.Video;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class NetworkMovieRepository {
         Response<MovieListResponse> movieListResponse = call.execute();
         List<MovieListResult> results = movieListResponse.body().getResults();
 
-        return mapResults(results);
+        return MovieMapper.map(results);
     }
 
     public List<Movie> getTopRated() throws IOException {
@@ -43,24 +45,18 @@ public class NetworkMovieRepository {
         Response<MovieListResponse> movieListResponse = call.execute();
         List<MovieListResult> results = movieListResponse.body().getResults();
 
-        return mapResults(results);
+        return MovieMapper.map(results);
     }
 
-    private List<Movie> mapResults(List<MovieListResult> results){
-        List<Movie> movies = new ArrayList<>();
+    public List<Video> getVideos(int movieId) throws IOException {
 
-        for(MovieListResult result : results)
-        {
-            Movie movie = new Movie(result.getId(),
-                    result.getTitle(),
-                    result.getPosterPath(),
-                    result.getOverview(),
-                    result.getReleaseDate(),
-                    result.getVoteAverage());
+        TheMovieDBService theMovieDBService = retrofit.create(TheMovieDBService.class);
+        Call<VideoListResponse> call = theMovieDBService.getVideos(movieId, API_KEY);
+        Response<VideoListResponse> videoListResponse = call.execute();
+        List<VideoListResult> results = videoListResponse.body().getResults();
 
-            movies.add(movie);
-        }
-
-        return movies;
+        return VideoMapper.map(results);
     }
+
+
 }

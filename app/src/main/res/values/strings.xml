@@ -7,4 +7,5 @@
     <string name="set_order_top_rated">Order by top rated</string>
     <string name="user_rating">User Rating</string>
     <string name="release_date">Release date</string>
+    <string name="trailers">Trailers</string>
 </resources>

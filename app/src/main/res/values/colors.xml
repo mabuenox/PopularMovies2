@@ -5,4 +5,6 @@
     <color name="colorAccent">#009688</color>
     <color name="colorMovieTitle">#ffffff</color>
     <color name="colorBackgroundImageTile">#ffffff</color>
+    <color name="colorSeparator">#cccccc</color>
+    <color name="colorYoutube">#b31217</color>
 </resources>
