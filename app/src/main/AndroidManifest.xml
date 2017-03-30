@@ -24,6 +24,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MovieListActivity" />
         </activity>
+
+        <provider
+            android:name="com.mbuenoferrer.popularmovies.provider.MoviesProvider"
+            android:authorities="com.mbuenoferrer.popularmovies.MoviesProvider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

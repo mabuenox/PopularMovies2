@@ -13,9 +13,7 @@
         android:maxLines="1"
         android:text="Author name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:paddingTop="@dimen/default_padding"
-        android:paddingBottom="@dimen/default_padding"
-        android:paddingLeft="@dimen/default_padding"/>
+        android:padding="@dimen/default_padding" />
 
     <TextView
         android:id="@+id/tv_review_content"
@@ -23,8 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Text content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:paddingBottom="@dimen/default_padding"
-        android:paddingLeft="@dimen/default_padding"/>
+        android:padding="@dimen/default_padding" />
 
     <View
         android:layout_width="match_parent"
