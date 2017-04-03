@@ -81,6 +81,15 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     style="@style/Base.TextAppearance.AppCompat.Headline" />
 
+                <Button
+                    android:id="@+id/favorite_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/iv_movie_poster"
+                    android:layout_below="@+id/tv_release_date"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:text="Add to favorites"/>
+
             </RelativeLayout>
 
             <TextView

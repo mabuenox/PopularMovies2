@@ -1,5 +1,10 @@
 package com.mbuenoferrer.popularmovies.data;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+
 import com.mbuenoferrer.popularmovies.BuildConfig;
 import com.mbuenoferrer.popularmovies.data.api.TheMovieDBService;
 import com.mbuenoferrer.popularmovies.data.api.models.MovieListResponse;
@@ -8,6 +13,8 @@ import com.mbuenoferrer.popularmovies.data.api.models.ReviewListResponse;
 import com.mbuenoferrer.popularmovies.data.api.models.ReviewListResult;
 import com.mbuenoferrer.popularmovies.data.api.models.VideoListResponse;
 import com.mbuenoferrer.popularmovies.data.api.models.VideoListResult;
+import com.mbuenoferrer.popularmovies.data.db.FavoriteMovieColumns;
+import com.mbuenoferrer.popularmovies.data.db.MoviesProvider;
 import com.mbuenoferrer.popularmovies.data.mappers.MovieMapper;
 import com.mbuenoferrer.popularmovies.data.mappers.ReviewMapper;
 import com.mbuenoferrer.popularmovies.data.mappers.VideoMapper;
@@ -23,13 +30,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NetworkMovieRepository {
+public class MovieRepository {
+
+    private Context context;
 
     private Retrofit retrofit;
 
     private String API_KEY = BuildConfig.MOVIE_DB_API_KEY;
 
-    public NetworkMovieRepository() {
+    public MovieRepository(Context context) {
+
+        this.context = context;
+
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -56,6 +68,17 @@ public class NetworkMovieRepository {
         return MovieMapper.map(results);
     }
 
+    public List<Movie> getFavorites() throws IOException {
+
+        Cursor cursor = context.getContentResolver().query(MoviesProvider.Movies.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        return MovieMapper.map(cursor);
+    }
+
     public List<Video> getVideos(int movieId) throws IOException {
 
         TheMovieDBService theMovieDBService = retrofit.create(TheMovieDBService.class);
@@ -76,4 +99,54 @@ public class NetworkMovieRepository {
         return ReviewMapper.map(results);
     }
 
+    public void toggleFavorite(Movie movie) {
+
+        boolean exists = existsFavorite(movie);
+
+        if(exists){
+            removeFavorite(movie);
+        }
+        else {
+            addFavorite(movie);
+        }
+    }
+
+    private void addFavorite(Movie movie) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FavoriteMovieColumns.ID, movie.getId());
+        contentValues.put(FavoriteMovieColumns.TITLE, movie.getTitle());
+        contentValues.put(FavoriteMovieColumns.POSTER, movie.getPoster());
+        contentValues.put(FavoriteMovieColumns.SYNOPSIS, movie.getSynopsis());
+        contentValues.put(FavoriteMovieColumns.RELEASE_DATE, movie.getReleaseDate());
+        contentValues.put(FavoriteMovieColumns.USER_RATING, movie.getUserRating());
+        context.getContentResolver().insert(MoviesProvider.Movies.CONTENT_URI, contentValues);
+    }
+
+    private void removeFavorite(Movie movie){
+
+        String stringId = Integer.toString(movie.getId());
+        Uri uri = MoviesProvider.Movies.CONTENT_URI;
+        //uri = uri.buildUpon().appendPath(stringId).build();
+
+        context.getContentResolver().delete(uri, FavoriteMovieColumns.ID + "=" + movie.getId(), null);
+    }
+
+    private boolean existsFavorite(Movie movie) {
+        boolean exists = false;
+
+        Cursor cursor = context.getContentResolver().query(MoviesProvider.Movies.CONTENT_URI,
+                null,
+                FavoriteMovieColumns.ID + "=" + movie.getId(),
+                null,
+                null);
+
+        List<Movie> matchesMovies = MovieMapper.map(cursor);
+
+        if(!matchesMovies.isEmpty()) {
+            exists = true;
+        }
+
+        return exists;
+
+    }
 }

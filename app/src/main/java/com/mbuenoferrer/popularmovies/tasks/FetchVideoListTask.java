@@ -3,10 +3,8 @@ package com.mbuenoferrer.popularmovies.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.mbuenoferrer.popularmovies.data.NetworkMovieRepository;
-import com.mbuenoferrer.popularmovies.entities.Movie;
+import com.mbuenoferrer.popularmovies.data.MovieRepository;
 import com.mbuenoferrer.popularmovies.entities.Video;
-import com.mbuenoferrer.popularmovies.enums.MovieListSort;
 import com.mbuenoferrer.popularmovies.utils.NetworkUtils;
 
 import java.io.IOException;
@@ -46,7 +44,7 @@ public class FetchVideoListTask extends AsyncTask<Integer, Void, List<Video>> {
 
         int movieId = params[0];
 
-        NetworkMovieRepository repository = new NetworkMovieRepository();
+        MovieRepository repository = new MovieRepository(context);
 
         try {
             videoList = repository.getVideos(movieId);

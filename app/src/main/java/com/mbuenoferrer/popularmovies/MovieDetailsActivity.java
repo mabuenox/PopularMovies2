@@ -1,18 +1,24 @@
 package com.mbuenoferrer.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mbuenoferrer.popularmovies.adapters.ReviewListAdapter;
 import com.mbuenoferrer.popularmovies.adapters.VideoListAdapter;
+import com.mbuenoferrer.popularmovies.data.db.FavoriteMovieColumns;
+import com.mbuenoferrer.popularmovies.data.db.MoviesProvider;
 import com.mbuenoferrer.popularmovies.entities.Movie;
 import com.mbuenoferrer.popularmovies.entities.Review;
 import com.mbuenoferrer.popularmovies.entities.Video;
@@ -20,13 +26,18 @@ import com.mbuenoferrer.popularmovies.tasks.FetchReviewListTask;
 import com.mbuenoferrer.popularmovies.tasks.FetchReviewListTaskListener;
 import com.mbuenoferrer.popularmovies.tasks.FetchVideoListTask;
 import com.mbuenoferrer.popularmovies.tasks.FetchVideoListTaskListener;
+import com.mbuenoferrer.popularmovies.tasks.ToggleFavoriteTask;
+import com.mbuenoferrer.popularmovies.tasks.ToggleFavoriteTaskListener;
 import com.squareup.picasso.Picasso;
 
+import java.net.URI;
 import java.util.List;
 
 public class MovieDetailsActivity
         extends AppCompatActivity
         implements VideoListAdapter.VideoListAdapterOnClickListener, ReviewListAdapter.ReviewListAdapterOnClickListener {
+
+    private static final String TAG = MovieDetailsActivity.class.getSimpleName();
 
     public static final String MOVIE_ID = "MOVIE";
 
@@ -35,6 +46,7 @@ public class MovieDetailsActivity
     private TextView mRatingTextView;
     private TextView mReleaseDateTextView;
     private ImageView mMoviePosterTextView;
+    private Button mFavoriteButton;
 
     private RecyclerView mVideoListRecyclerView;
     private VideoListAdapter mVideoListAdapter;
@@ -52,11 +64,12 @@ public class MovieDetailsActivity
         setContentView(R.layout.activity_movie_details);
 
         // Movie
-        mTitleTextView = (TextView)findViewById(R.id.tv_title);
-        mSynopsisTextView = (TextView)findViewById(R.id.tv_synopsis);
-        mRatingTextView = (TextView)findViewById(R.id.tv_user_rating);
-        mReleaseDateTextView = (TextView)findViewById(R.id.tv_release_date);
-        mMoviePosterTextView = (ImageView)findViewById(R.id.iv_movie_poster);
+        mTitleTextView = (TextView) findViewById(R.id.tv_title);
+        mSynopsisTextView = (TextView) findViewById(R.id.tv_synopsis);
+        mRatingTextView = (TextView) findViewById(R.id.tv_user_rating);
+        mReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
+        mMoviePosterTextView = (ImageView) findViewById(R.id.iv_movie_poster);
+        mFavoriteButton = (Button) findViewById(R.id.favorite_button);
 
         // Videos
         mVideoListRecyclerView = (RecyclerView) findViewById(R.id.rv_videos);
@@ -71,7 +84,7 @@ public class MovieDetailsActivity
         Intent intentThatStartedThisActivity = getIntent();
 
         if (intentThatStartedThisActivity.hasExtra(MOVIE_ID)) {
-            Movie movie = intentThatStartedThisActivity.getParcelableExtra(MOVIE_ID);
+            final Movie movie = intentThatStartedThisActivity.getParcelableExtra(MOVIE_ID);
             mTitleTextView.setText(movie.getTitle());
             mSynopsisTextView.setText(movie.getSynopsis());
             mRatingTextView.setText(movie.getUserRating() + "/10");
@@ -81,13 +94,22 @@ public class MovieDetailsActivity
                     .load(movie.getPoster())
                     .into(mMoviePosterTextView);
 
+            mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    try {
+                        toggleFavorite(movie);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            });
+
             // Configure recycler view for videos
             LinearLayoutManager videosLayoutManager = new LinearLayoutManager(this);
             mVideoListRecyclerView.setLayoutManager(videosLayoutManager);
             mVideoListRecyclerView.setHasFixedSize(true);
             mVideoListAdapter = new VideoListAdapter(this);
             mVideoListRecyclerView.setAdapter(mVideoListAdapter);
-
             loadVideosData(movie.getId());
 
             // Configure recycler view for reviews
@@ -96,7 +118,6 @@ public class MovieDetailsActivity
             mReviewListRecyclerView.setHasFixedSize(true);
             mReviewListAdapter = new ReviewListAdapter(this);
             mReviewListRecyclerView.setAdapter(mReviewListAdapter);
-
             loadReviewsData(movie.getId());
         }
     }
@@ -138,7 +159,6 @@ public class MovieDetailsActivity
     }
 
 
-
     private void loadReviewsData(int movieId) {
         new FetchReviewListTask(this, new FetchReviewListTaskListener() {
             @Override
@@ -173,5 +193,15 @@ public class MovieDetailsActivity
     public void onReviewClick(Review review) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.getUrl()));
         startActivity(intent);
+    }
+
+
+    private void toggleFavorite(Movie movie) {
+        new ToggleFavoriteTask(this, new ToggleFavoriteTaskListener() {
+            @Override
+            public void onTaskPostExecute() {
+                Toast.makeText(getBaseContext(), R.string.favorite_saved, Toast.LENGTH_LONG).show();
+            }
+        }).execute(movie);
     }
 }

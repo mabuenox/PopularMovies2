@@ -9,4 +9,6 @@
     <string name="release_date">Release date</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
+
+    <string name="favorite_saved">Saved!</string>
 </resources>
