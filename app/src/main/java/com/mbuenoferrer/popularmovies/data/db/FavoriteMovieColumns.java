@@ -32,10 +32,10 @@ public interface FavoriteMovieColumns {
     @DataType(REAL) @NotNull
     String USER_RATING = "user_rating";
 
-    int ID_INDEX = 0;
-    int TITLE_INDEX = 1;
-    int POSTER_INDEX = 2;
-    int SYNOPSIS_INDEX = 3;
-    int RELEASE_DATE_INDEX = 4;
-    int USER_RATING_INDEX = 5;
+    int MOVIE_ID_INDEX = 1;
+    int TITLE_INDEX = 2;
+    int POSTER_INDEX = 3;
+    int SYNOPSIS_INDEX = 4;
+    int RELEASE_DATE_INDEX = 5;
+    int USER_RATING_INDEX = 6;
 }

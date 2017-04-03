@@ -56,6 +56,9 @@ public class FetchMovieListTask extends AsyncTask<Integer, Void, List<Movie>> {
                 case MovieListSort.TOP_RATED:
                     movieList = repository.getTopRated();
                     break;
+                case MovieListSort.FAVORITES:
+                    movieList = repository.getFavorites();
+                    break;
             }
         } catch (IOException e) {
             e.printStackTrace();

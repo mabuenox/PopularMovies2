@@ -42,7 +42,7 @@ public class MovieListActivity extends AppCompatActivity
         int numberOfColumns = DimenUtils.calculateNoOfColumns(getBaseContext(), 180);
         GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
         mMovieListRecyclerView.setLayoutManager(layoutManager);
-        mMovieListRecyclerView.setHasFixedSize(true);
+        mMovieListRecyclerView.setHasFixedSize(false);
         mMovieListAdapter = new MovieListAdapter(this);
         mMovieListRecyclerView.setAdapter(mMovieListAdapter);
 
@@ -92,6 +92,8 @@ public class MovieListActivity extends AppCompatActivity
             loadMoviesData(MovieListSort.POPULAR);
         } else if (selectedId == R.id.action_order_top_rated) {
             loadMoviesData(MovieListSort.TOP_RATED);
+        } else if (selectedId == R.id.action_show_favorites) {
+            loadMoviesData(MovieListSort.FAVORITES);
         }
         return super.onOptionsItemSelected(item);
     }

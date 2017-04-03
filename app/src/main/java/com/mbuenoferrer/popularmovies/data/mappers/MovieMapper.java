@@ -36,7 +36,7 @@ public class MovieMapper {
             try {
                 while (cursor.moveToNext()) {
                     Movie movie = new Movie(
-                            cursor.getInt(FavoriteMovieColumns.ID_INDEX),
+                            cursor.getInt(FavoriteMovieColumns.MOVIE_ID_INDEX),
                             cursor.getString(FavoriteMovieColumns.TITLE_INDEX),
                             cursor.getString(FavoriteMovieColumns.POSTER_INDEX),
                             cursor.getString(FavoriteMovieColumns.SYNOPSIS_INDEX),
