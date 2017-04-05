@@ -131,7 +131,7 @@ public class MovieRepository {
         context.getContentResolver().delete(uri, FavoriteMovieColumns.ID + "=" + movie.getId(), null);
     }
 
-    private boolean existsFavorite(Movie movie) {
+    public boolean existsFavorite(Movie movie) {
         boolean exists = false;
 
         Cursor cursor = context.getContentResolver().query(MoviesProvider.Movies.CONTENT_URI,

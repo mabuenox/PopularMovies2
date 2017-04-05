@@ -11,5 +11,8 @@
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
 
-    <string name="favorite_saved">Saved!</string>
+    <string name="slash_ten">/10</string>
+    <string name="favorite_saved">Saved</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
 </resources>

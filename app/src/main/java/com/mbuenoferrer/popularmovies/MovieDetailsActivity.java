@@ -22,6 +22,8 @@ import com.mbuenoferrer.popularmovies.data.db.MoviesProvider;
 import com.mbuenoferrer.popularmovies.entities.Movie;
 import com.mbuenoferrer.popularmovies.entities.Review;
 import com.mbuenoferrer.popularmovies.entities.Video;
+import com.mbuenoferrer.popularmovies.tasks.FetchIsFavoriteTask;
+import com.mbuenoferrer.popularmovies.tasks.FetchIsFavoriteTaskListener;
 import com.mbuenoferrer.popularmovies.tasks.FetchReviewListTask;
 import com.mbuenoferrer.popularmovies.tasks.FetchReviewListTaskListener;
 import com.mbuenoferrer.popularmovies.tasks.FetchVideoListTask;
@@ -71,6 +73,8 @@ public class MovieDetailsActivity
         mMoviePosterTextView = (ImageView) findViewById(R.id.iv_movie_poster);
         mFavoriteButton = (Button) findViewById(R.id.favorite_button);
 
+
+
         // Videos
         mVideoListRecyclerView = (RecyclerView) findViewById(R.id.rv_videos);
         mErrorMessageDisplayVideos = (TextView) findViewById(R.id.tv_error_message_display_videos);
@@ -87,12 +91,14 @@ public class MovieDetailsActivity
             final Movie movie = intentThatStartedThisActivity.getParcelableExtra(MOVIE_ID);
             mTitleTextView.setText(movie.getTitle());
             mSynopsisTextView.setText(movie.getSynopsis());
-            mRatingTextView.setText(movie.getUserRating() + "/10");
+            mRatingTextView.setText(movie.getUserRating() + "" + R.string.slash_ten);
             mReleaseDateTextView.setText(movie.getReleaseDate());
 
             Picasso.with(mMoviePosterTextView.getContext())
                     .load(movie.getPoster())
                     .into(mMoviePosterTextView);
+
+            loadFavoriteButton(movie);
 
             mFavoriteButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -119,6 +125,25 @@ public class MovieDetailsActivity
             mReviewListAdapter = new ReviewListAdapter(this);
             mReviewListRecyclerView.setAdapter(mReviewListAdapter);
             loadReviewsData(movie.getId());
+        }
+    }
+
+    private void loadFavoriteButton(Movie movie) {
+        new FetchIsFavoriteTask(this, new FetchIsFavoriteTaskListener() {
+            @Override
+            public void onTaskPostExecute(Boolean result) {
+                if (result != null) {
+                    setFavoriteButtonText(result);
+                }
+            }
+        }).execute(movie);
+    }
+
+    private void setFavoriteButtonText(boolean isFavorite) {
+        if(isFavorite) {
+            mFavoriteButton.setText(R.string.remove_from_favorites);
+        } else {
+            mFavoriteButton.setText(R.string.add_to_favorites);
         }
     }
 
@@ -197,6 +222,13 @@ public class MovieDetailsActivity
 
 
     private void toggleFavorite(Movie movie) {
+
+        if(mFavoriteButton.getText().toString().equals(getText(R.string.add_to_favorites))) {
+            setFavoriteButtonText(true);
+        } else {
+            setFavoriteButtonText(false);
+        }
+
         new ToggleFavoriteTask(this, new ToggleFavoriteTaskListener() {
             @Override
             public void onTaskPostExecute() {
@@ -204,4 +236,6 @@ public class MovieDetailsActivity
             }
         }).execute(movie);
     }
+
+
 }
