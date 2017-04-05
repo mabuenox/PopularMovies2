@@ -2,6 +2,7 @@ package com.mbuenoferrer.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,6 +24,13 @@ import java.util.List;
 
 public class MovieListActivity extends AppCompatActivity
         implements MovieListAdapter.MovieListAdapterOnClickListener {
+
+    private final String SORT_STATE_KEY = "SORT_STATE";
+    private final String SAVED_LAYOUT_MANAGER_KEY = "SAVED_LAYOUT_MANAGER";
+
+    private Parcelable mLayoutManagerSavedState;
+
+    private int mCurrentSort;
 
     private RecyclerView mMovieListRecyclerView;
     private MovieListAdapter mMovieListAdapter;
@@ -46,10 +54,34 @@ public class MovieListActivity extends AppCompatActivity
         mMovieListAdapter = new MovieListAdapter(this);
         mMovieListRecyclerView.setAdapter(mMovieListAdapter);
 
-        loadMoviesData(MovieListSort.POPULAR);
+        if (savedInstanceState != null) {
+            mCurrentSort = savedInstanceState.getInt(SORT_STATE_KEY);
+            //mLayoutManagerSavedState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER_KEY);
+        } else {
+            mCurrentSort = MovieListSort.POPULAR;
+        }
+
+        loadMoviesData(mCurrentSort);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SORT_STATE_KEY, mCurrentSort);
+        outState.putParcelable(SAVED_LAYOUT_MANAGER_KEY, mMovieListRecyclerView.getLayoutManager().onSaveInstanceState());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCurrentSort = savedInstanceState.getInt(SORT_STATE_KEY);
+        mLayoutManagerSavedState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER_KEY);
     }
 
     private void loadMoviesData(int sortBy) {
+
+        mCurrentSort = sortBy;
+
         new FetchMovieListTask(this, new FetchMovieListTaskListener() {
             @Override
             public void onTaskPreExecute() {
@@ -62,6 +94,9 @@ public class MovieListActivity extends AppCompatActivity
                 if (result != null) {
                     showMovieList();
                     mMovieListAdapter.setMoviesData(result);
+                    if (mLayoutManagerSavedState != null) {
+                        mMovieListRecyclerView.getLayoutManager().onRestoreInstanceState(mLayoutManagerSavedState);
+                    }
                 } else {
                     showErrorMessage();
                 }
